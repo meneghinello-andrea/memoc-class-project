@@ -1,0 +1,33 @@
+%------------------------------------------------
+%
+% Master.tex
+%
+% This file contains all the directive to include
+% the different part of the document and build it
+% during the compilation phase.
+%
+% To compile correctly the entire document follow
+% these commands in a shell positioned in the folder
+% that contains the master document (Master.tex):
+%
+%	1) pdflatex Frontespiece/Frontespiece
+%	2) pdflatex Frontespiece/Frontespiece-frn
+%	3) pdflatex Frontespiece/Frontespiece
+%	4) pdflatex Master
+%   5) makeglossaries Master
+%	6) pdflatex Master
+%	7) pdflatex Master
+%------------------------------------------------
+\input{Configuration/Preamble.tex}
+
+\begin{document}
+
+\includepdf[pages={1}]{Frontespiece/Frontespiece.pdf}
+
+\clearpage
+
+\printListOfContents{TRUE}
+
+%\input{Chapters/Abstract/Abstract.tex}
+
+\end{document}
