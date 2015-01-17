@@ -1,0 +1,43 @@
+%------------------------------------------------
+%
+% Frontespiece.tex
+%
+% This document generate the frontespiece for the
+% document.
+%
+% To compile correctly this document execute these
+% command in a shell, positioned in the directory
+% that contains the master document of the project.
+%
+%	1) pdflatex Frontespiece/Frontespiece
+%	2) pdflatex Frontespiece/Frontespiece-frn
+%	3) pdflatex Frontespiece/Frontespiece
+%------------------------------------------------
+\documentclass[a4paper, titlepage]{book}
+
+\usepackage[italian]{babel}
+\usepackage[swapnames]{frontespizio}
+
+%Preambolo{\renewcommand{\frontsmallfont}[1]{\small Matr.}}
+\NRelatore{Alla cortese attenzione di}{Alla cortese attenzione di}
+
+\begin{document}
+\begin{frontespizio}
+
+\Universita{Padova}
+\Logo[2cm]{../Images/Frontespiece/Logo_unipd.png}
+
+\Facolta{Matematica}
+\Corso{Informatica}
+
+\Annoaccademico{2013--2014}
+
+\Titoletto{Progetto Metodi e Modelli per l'Ottimizzazione combinatoria}
+\Titolo{Analisi del problema TSP}
+
+\Candidato[1082342]{Andrea Meneghinello}
+
+\Relatore{Luigi De Giovanni}
+
+\end{frontespizio}
+\end{document}
