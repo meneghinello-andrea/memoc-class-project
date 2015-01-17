@@ -1,0 +1,52 @@
+%------------------------------------------------
+%
+% Preamble.tex
+%
+% This file contains all the settings for a correct
+% compilation of the document. Include this file
+% before starting the document section.
+%------------------------------------------------
+\documentclass[paper=A4, fontsize=11pt, parskip=full]{scrreprt}
+
+\usepackage{acronym}
+\usepackage{array}
+\usepackage{eurosym}
+\usepackage{fourier}
+\usepackage{graphicx}
+\usepackage{ifthen}
+\usepackage{lastpage}
+\usepackage{longtable}
+\usepackage{multirow}
+\usepackage{pdfpages}
+\usepackage{sectsty}
+\usepackage{siunitx}
+\usepackage[utf8]{inputenc}
+\usepackage[babel]{csquotes}
+\usepackage[T1]{fontenc}
+\usepackage[hidelinks]{hyperref}
+\usepackage[english, italian]{babel}
+\usepackage[nonumberlist, toc]{glossaries}
+\usepackage[protrusion=true, expansion=true]{microtype}
+\usepackage[automark, headsepline, footsepline, markuppercase]{scrpage2}
+
+\allsectionsfont{\centering \normalfont\scshape}
+
+\pagestyle{scrheadings}
+
+\lehead{Memoc}
+\rohead{TSP Solver}
+\chead{}
+\cfoot{\thepage{} di \pageref{LastPage}}
+
+\setglossarystyle{altlist}
+\makeglossaries
+
+\newcommand{\english}[1]{\foreignlanguage{english}{\textit{#1}}}
+\newcommand{\keyword}[1]{\textbf{#1}}
+\newcommand{\printListOfContents}[1]{\ifthenelse{\equal{#1}{TRUE}}{\tableofcontents{}}{}}
+\newcommand{\printListOfFigures}[1]{\ifthenelse{\equal{#1}{TRUE}}{\listoffigures{}}{}}
+\newcommand{\printListOfTables}[1]{\ifthenelse{\equal{#1}{TRUE}}{\listoftables{}}{}}
+\newcommand{\printGlossary}[1]{\ifthenelse{\equal{#1}{TRUE}}{\printglossary[title=Glossario]{}}{}}
+\newcommand{\glossarySingolarTerm}[1]{\underline{\gls{#1}}}
+\newcommand{\glossaryPluralTerm}[1]{\underline{\glspl{#1}}}
+\newcommand{\attribute}[1]{\textsc{#1}}
