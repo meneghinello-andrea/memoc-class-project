@@ -15,16 +15,6 @@ class Population
 	private:
 		vector<Chromosome*> *population;
 
-//		struct Less
-//		{
-//			Less(const Population &population) : population(population) {}
-//			bool operator()(const Chromosome *chromosomeA, const Chromosome *chromosomeB)
-//			{
-//				return (*chromosomeA) < (*chromosomeB);
-//			}
-//			population& population;
-//		};
-
 	public:
 		Population();
 		~Population();
@@ -33,7 +23,7 @@ class Population
 
 		void sortPopulation();
 		void addChromosome(Chromosome *chromosome);
-		vector<Chromosome> getRandomSet(int size) const;
+		Chromosome getRandomChromosome(int setSize) const;
 
 		class Iterator
 		{

@@ -42,7 +42,7 @@ void Population::addChromosome(Chromosome *chromosome)
 	}
 }
 
-vector<Chromosome> Population::getRandomSet(int size) const
+Chromosome Population::getRandomChromosome(int setSize) const
 {
 	Chromosome* selected = 0;
 	int index = -1;
@@ -53,10 +53,10 @@ vector<Chromosome> Population::getRandomSet(int size) const
 	//Initialize the set
 	vector<Chromosome> randomSet;
 
-	if(size > 0)
+	if(setSize > 0)
 	{
 		//Build the random set
-		for(int i = 0; i < size; i += 1)
+		for(int i = 0; i < setSize; i += 1)
 		{
 			//Select a random number between 0 and population size
 			index = rand() % this->size();
@@ -72,7 +72,7 @@ vector<Chromosome> Population::getRandomSet(int size) const
 		sort(randomSet.begin(), randomSet.end());
 	}
 
-	return randomSet;
+	return randomSet.at(0);
 }
 
 bool Population::Iterator::operator==(const Population::Iterator &iterator) const
