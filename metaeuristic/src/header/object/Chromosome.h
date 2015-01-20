@@ -1,6 +1,7 @@
 #ifndef CHROMOSOME_H
 #define CHROMOSOME_H
 
+#include <math.h>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -14,6 +15,10 @@ class Chromosome
 	private:
 		double fitnessValue;
 		vector<int> *genes;
+
+	protected:
+		double cint(double value) const;
+		double round(double value, unsigned places) const;
 
 	public:
 		Chromosome(int genes[], int chromosomeSize, double fitnessValue);

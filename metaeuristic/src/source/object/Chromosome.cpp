@@ -1,5 +1,43 @@
 #include "src/header/object/Chromosome.h"
 
+double Chromosome::cint(double value) const
+{
+	double fractional = modf(value, 0);
+	double result = -1;
+
+	if(fractional >= 0.5)
+	{
+		if(value >= 0)
+		{
+			result = ceil(value);
+		}
+		else
+		{
+			result = floor(value);
+		}
+	}
+	else
+	{
+		if(value < 0)
+		{
+			result = ceil(value);
+		}
+		else
+		{
+			result = floor(value);
+		}
+	}
+
+	return result;
+}
+
+double Chromosome::round(double value, unsigned places) const
+{
+	double off = pow(10, places);
+	double result = this->cint(value * off) / off;
+	return result;
+}
+
 Chromosome::Chromosome(int genes[], int chromosomeSize, double fitnessValue)
 {
 	int gene = -1;
@@ -18,7 +56,7 @@ Chromosome::Chromosome(int genes[], int chromosomeSize, double fitnessValue)
 	}
 
 	//Save the fitness value
-	this->fitnessValue = fitnessValue;
+	this->fitnessValue = this->round(fitnessValue, 4);
 }
 
 Chromosome::Chromosome(const Chromosome &chromosome)
@@ -143,6 +181,9 @@ string Chromosome::toString() const
 		//Print the gene in the string stream
 		stream << gene << "-";
 	}
+
+	//Print the fitness value associated
+	stream << " (" << this->getFitnessValue() << ")";
 
 	chromosome = stream.str();
 
