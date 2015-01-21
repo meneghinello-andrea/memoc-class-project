@@ -2,7 +2,8 @@
 
 double Chromosome::cint(double value) const
 {
-	double fractional = modf(value, 0);
+	double int_part = 0;
+	double fractional = modf(value, &int_part);
 	double result = -1;
 
 	if(fractional >= 0.5)
@@ -43,7 +44,7 @@ Chromosome::Chromosome(int genes[], int chromosomeSize, double fitnessValue)
 	int gene = -1;
 
 	//Initialize the data structure for the gene sequence
-	this->genes = new vector<int>(chromosomeSize);
+	this->genes = new vector<int>();
 
 	//Save the gene in the chromosome
 	for(int i = 0; i < chromosomeSize; i += 1)
@@ -64,7 +65,7 @@ Chromosome::Chromosome(const Chromosome &chromosome)
 	int gene = -1;
 
 	//Initialize the data structure for the gene sequence
-	this->genes = new vector<int>(chromosome.size());
+	this->genes = new vector<int>();
 
 	//Copy the chromosome
 	for(Chromosome::Iterator iter = chromosome.begin(); iter != chromosome.end(); iter++)
