@@ -10,12 +10,15 @@ Population::~Population()
 {
 	Chromosome *current = 0;
 
-	for(vector<Chromosome*>::iterator iter; iter != this->population->end(); ++iter)
-	{
-		//Extract the chromosome
-		current = *iter;
+//	for(int i = 0; i < this->size(); i += 1)
+//	{
+//		//Delete the chromosome
+//		delete this->population->at(i);
+//	}
 
-		//Delete the chromosome
+	for(vector<Chromosome*>::iterator iter = this->population->begin(); iter != this->population->end(); ++iter)
+	{
+		current = *iter;
 		delete current;
 	}
 
