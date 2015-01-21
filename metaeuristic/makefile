@@ -7,8 +7,9 @@ HEADER_DIR = src/header
 SOURCE_DIR = src/source
 
 BUILD_DIR = bin
+DATAS_DIR = data
 
-DEPENDENCY_OBJECTS = chromosome.o population.o
+DEPENDENCY_OBJECTS = chromosome.o population.o genetic_algorithm.o
 
 EXECUTABLE = solver
 
@@ -27,6 +28,8 @@ create:
 	@echo "--------------------------------------------------"
 	@mkdir -p $(BUILD_DIR)
 	@echo "Build directory was succesfully created"
+	@mkdir -p $(DATAS_DIR)
+	@echo "Datas directory was succesfully created"
 	@echo "--------------------------------------------------"
 	@echo "             ENVIRONMENT CREATED                  "
 	@echo "--------------------------------------------------"
@@ -52,7 +55,7 @@ population.o: $(HEADER_DIR)/object/Chromosome.h $(HEADER_DIR)/object/Population.
 	@$(COMPILER) $(COMPILER_FLAGS) $(SOURCE_DIR)/object/Population.cpp -o $(BUILD_DIR)/Population.o
 	@echo "Population object was succesfully compiled"
 
-genetic_algorithm.o: $(HEADER_DIR)/object/Chromosome.h $(HEADER_DIR)/object/Population.h $(HEADER_DIR)/solver/MetauristicSolver.h $(HEADER_DIR)/solver/GeneticAlgorithm.h $(SOURCE_DIR)/solver/GeneticAlgorithm.cpp
+genetic_algorithm.o: $(HEADER_DIR)/object/Chromosome.h $(HEADER_DIR)/object/Population.h $(HEADER_DIR)/solver/GeneticAlgorithm.h $(SOURCE_DIR)/solver/GeneticAlgorithm.cpp
 	@$(COMPILER) $(COMPILER_FLAGS) $(SOURCE_DIR)/solver/GeneticAlgorithm.cpp -o $(BUILD_DIR)/GeneticAlgorithm.o
 	@echo "GeneticAlgorithm object was succesfully compiled"
 
