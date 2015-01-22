@@ -27,6 +27,8 @@ class Chromosome
 		Chromosome(const Chromosome &chromosome);
 		~Chromosome();
 
+		Chromosome& operator=(const Chromosome &chromosome);
+
 		int size() const;
 
 		void mutate(int sequenceLength);
