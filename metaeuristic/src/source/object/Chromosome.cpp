@@ -1,170 +1,78 @@
 #include "src/header/object/Chromosome.h"
 
-double Chromosome::cint(double value) const
+Chromosome::Chromosome()
 {
-	double int_part = 0;
-	double fractional = modf(value, &int_part);
-	double result = -1;
-
-	if(fractional >= 0.5)
-	{
-		if(value >= 0)
-		{
-			result = ceil(value);
-		}
-		else
-		{
-			result = floor(value);
-		}
-	}
-	else
-	{
-		if(value < 0)
-		{
-			result = ceil(value);
-		}
-		else
-		{
-			result = floor(value);
-		}
-	}
-
-	return result;
+	this->genes = new vector<int>();
 }
 
-double Chromosome::round(double value, unsigned places) const
-{
-	double off = pow(10, places);
-	double result = this->cint(value * off) / off;
-	return result;
-}
-
-Chromosome::Chromosome(int genes[], int chromosomeSize, double fitnessValue)
+Chromosome::Chromosome(int geneSequence[], int sequenceLength)
 {
 	int gene = -1;
 
-	//Initialize the data structure for the gene sequence
+	//Initialize the new chromosome structure
 	this->genes = new vector<int>();
 
-	//Save the gene in the chromosome
-	for(int i = 0; i < chromosomeSize; i += 1)
+	for(int i = 0; i < sequenceLength; i += 1)
 	{
 		//Extract the gene
-		gene = genes[i];
+		gene = geneSequence[i];
 
-		//Save the gene in the chromosome structure
+		//Save the gene in the structure
 		this->genes->push_back(gene);
 	}
-
-	//Save the fitness value
-	this->fitnessValue = this->round(fitnessValue, 4);
 }
 
 Chromosome::Chromosome(const Chromosome &chromosome)
 {
 	int gene = -1;
 
-	//Initialize the data structure for the gene sequence
+	//Initialize the new chromosome structure
 	this->genes = new vector<int>();
 
-	//Copy the chromosome
+	//Copy al the genes in the new structure
 	for(Chromosome::Iterator iter = chromosome.begin(); iter != chromosome.end(); iter++)
 	{
-		//extract the gene
+		//Extract a single gene
 		gene = chromosome[iter];
 
-		//Save teh gene in the chromosome structure
+		//Save the gene in the new structure
 		this->genes->push_back(gene);
 	}
-
-	//Copy the fitness value
-	this->fitnessValue = chromosome.getFitnessValue();
 }
 
 Chromosome::~Chromosome()
 {
+	//Check if memory is occupied
 	if(this->genes != 0)
-	{
+	{	
+		//Free memory
 		delete this->genes;
 	}
 }
 
 int Chromosome::size() const
 {
+	//Compute the size of the chromosome
 	int size = static_cast<int>(this->genes->size());
+
 	return size;
 }
 
-double Chromosome::getFitnessValue() const
+void Chromosome::mutate(int sequenceLength)
 {
-	return this->fitnessValue;
-}
+	//Initialize the random seed
+	srand(time(NULL));
 
-Chromosome::Iterator Chromosome::begin() const
-{
-	//Construct and iterator from the beginning of the chromosome
-	Chromosome::Iterator iterator = this->begin(0);
-	return iterator;
-}
+	//Select two point the chromosome
+	int cut_point_a = rand() % (sequenceLength - 1) + 1;
+	int cut_point_b = rand() % (sequenceLength - 1) + 1;
 
-Chromosome::Iterator Chromosome::begin(int index) const
-{
-	//Construct an iterator from a specific starting point
-	Chromosome::Iterator iterator;
-	iterator.chromosome = this;
-	iterator.cursor = index;
-	return iterator;
-}
+	//Set the start and end index
+	int start = min(cut_point_a, cut_point_b);
+	int end = this->size() - max(cut_point_a, cut_point_b);
 
-Chromosome::Iterator Chromosome::end() const
-{
-	//Construct the end iterator
-	int start = this->size();
-	Chromosome::Iterator iterator = this->begin(start);
-	return iterator;
-}
-
-bool Chromosome::equals(const Chromosome &chromosome) const
-{
-	bool equals = true;
-	Chromosome::Iterator iterChromoA;
-	Chromosome::Iterator iterChromoB;
-	int geneA = -1;
-	int geneB = -1;
-
-	if(this->size() == chromosome.size())
-	{
-		//Initialize the iterators
-		iterChromoA = this->begin();
-		iterChromoB = chromosome.begin();
-
-		while(iterChromoA != this->end() && iterChromoB != chromosome.end() && equals == true)
-		{
-			//Extract the gene
-			geneA = (*this)[iterChromoA];
-			geneB = chromosome[iterChromoB];
-
-			//Check the gene
-			if(geneA != geneB)
-			{
-				equals = false;
-			}
-			else
-			{
-				//Increment the iterators
-				iterChromoA++;
-				iterChromoB++;
-			}
-		}
-
-		equals = equals && this->getFitnessValue() == chromosome.getFitnessValue();
-	}
-	else
-	{
-		equals = false;
-	}
-
-	return equals;
+	//Mutate the part between start and end
+	reverse(this->genes->begin() + start, this->genes->end() - end);
 }
 
 string Chromosome::toString() const
@@ -173,36 +81,19 @@ string Chromosome::toString() const
 	ostringstream stream;
 	string chromosome = "";
 
-	//Print the chromosome in the stream
 	for(Chromosome::Iterator iter = this->begin(); iter != this->end(); iter++)
 	{
-		//Extract the gene
+		//Extract a gene
 		gene = (*this)[iter];
 
-		//Print the gene in the string stream
-		stream << gene << "-";
+		//Insert the gene in the stream
+		stream << gene << "|";
 	}
 
-	//Print the fitness value associated
-	stream << " (" << this->getFitnessValue() << ")";
-
+	//Convert the stream in a string
 	chromosome = stream.str();
 
 	return chromosome;
-}
-
-int Chromosome::operator[](const Chromosome::Iterator &iterator) const
-{
-	int gene = -1;
-	int index = iterator.cursor;
-
-	if(0 <= index && index < this->size())
-	{
-		//Extract the gene pointed by the iterator object
-		gene = this->genes->at(index);
-	}
-
-	return gene;
 }
 
 bool Chromosome::Iterator::operator==(const Chromosome::Iterator &iterator) const
@@ -211,7 +102,8 @@ bool Chromosome::Iterator::operator==(const Chromosome::Iterator &iterator) cons
 
 	if(this->chromosome == iterator.chromosome && this->cursor == iterator.cursor)
 	{
-		equals = true;
+		//The two iterator are at the same point in the same chromosome
+		equals = !equals;
 	}
 
 	return equals;
@@ -220,68 +112,89 @@ bool Chromosome::Iterator::operator==(const Chromosome::Iterator &iterator) cons
 bool Chromosome::Iterator::operator!=(const Chromosome::Iterator &iterator) const
 {
 	bool different = !(*this == iterator);
+
 	return different;
 }
 
-Chromosome::Iterator& Chromosome::Iterator::operator++()
+Chromosome::Iterator Chromosome::Iterator::operator++()
 {
-	if(0 <= this->cursor && this->cursor < this->chromosome->size())
+	int size = this->chromosome->size();
+
+	//Check if the cursor is in the matrix limits
+	if(0 <= this->cursor && this->cursor < size)
 	{
+		//Move the cursor to the next position
 		this->cursor += 1;
 	}
 
 	return *this;
 }
 
-Chromosome::Iterator& Chromosome::Iterator::operator++(int increment)
+Chromosome::Iterator Chromosome::Iterator::operator++(int increment)
 {
 	return ++(*this);
 }
 
-bool Chromosome::operator==(const Chromosome &chromosome) const
+Chromosome::Iterator Chromosome::begin() const
 {
-	bool equals = this->equals(chromosome);
-	return equals;
+	//Create an itertor that point to the first gene in the chromosome
+	Chromosome::Iterator iterator = this->begin(0);
+
+	return iterator;
 }
 
-bool Chromosome::operator!=(const Chromosome &chromosome) const
+Chromosome::Iterator Chromosome::begin(int start) const
 {
-	bool different = !((*this) == chromosome);
-	return different;
-}
+	//Create an empty iterator
+	Chromosome::Iterator iterator;
 
-bool Chromosome::operator<=(const Chromosome &chromosome) const
-{
-	bool compare = (*this) == chromosome;
+	//Size of the chromosome
+	int size = this->size();
 
-	if(compare == false)
+	//Link the iterator and the chromosome
+	iterator.chromosome = this;
+
+	//Set the cursor in the iterator
+	if(0 <= start && start < size)
 	{
-		compare = this->getFitnessValue() <= chromosome.getFitnessValue();
+		iterator.cursor = start;
+	}
+	else
+	{
+		iterator.cursor = size;
 	}
 
-	return compare;
+	return iterator;
 }
 
-bool Chromosome::operator>=(const Chromosome &chromosome) const
+Chromosome::Iterator Chromosome::end() const
 {
-	bool compare = ((*this) == chromosome);
+	//Compute the first index outside the chromosome
+	int end = this->size();
 
-	if(compare == false)
+	//Create an iterator tha point outside the chromosome
+	Chromosome::Iterator iterator = this->begin(end);
+
+	return iterator;
+}
+
+int Chromosome::operator[](const Chromosome::Iterator &iterator) const
+{
+	//The gene
+	int gene = -1;
+
+	//Extract the cursor from the iterator
+	int index = iterator.cursor;
+
+	//The chromosome size
+	int size = this->size();
+
+	//Check if the index is in the matrix limits
+	if(0 <= index && index < size)
 	{
-		compare = this->getFitnessValue() >= chromosome.getFitnessValue();
+		//Extract the gene
+		gene = this->genes->at(index);
 	}
 
-	return compare;
-}
-
-bool Chromosome::operator<(const Chromosome &chromosome) const
-{
-	bool compare = !((*this) >= chromosome);
-	return compare;
-}
-
-bool Chromosome::operator>(const Chromosome &chromosome) const
-{
-	bool compare = !((*this) <= chromosome);
-	return compare;
+	return gene;
 }

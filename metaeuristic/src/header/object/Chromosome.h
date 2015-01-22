@@ -1,34 +1,36 @@
 #ifndef CHROMOSOME_H
 #define CHROMOSOME_H
 
+#include <algorithm>
 #include <math.h>
 #include <sstream>
+#include <stdlib.h>
 #include <string>
+#include <time.h>
 #include <vector>
 
+using std::max;
+using std::min;
 using std::ostringstream;
+using std::reverse;
 using std::string;
 using std::vector;
 
 class Chromosome
 {
 	private:
-		double fitnessValue;
 		vector<int> *genes;
 
-	protected:
-		double cint(double value) const;
-		double round(double value, unsigned places) const;
-
 	public:
-		Chromosome(int genes[], int chromosomeSize, double fitnessValue);
-		Chromosome(const Chromosome &Chromosome);
+		Chromosome();
+		Chromosome(int geneSequence[], int sequenceLength);
+		Chromosome(const Chromosome &chromosome);
 		~Chromosome();
 
 		int size() const;
-		double getFitnessValue() const;
 
-		bool equals(const Chromosome &chromosome) const;
+		void mutate(int sequenceLength);
+
 		string toString() const;
 
 		class Iterator
@@ -40,27 +42,18 @@ class Chromosome
 				int cursor;
 
 			public:
-				bool operator==(const Iterator &iterator) const;
-				bool operator!=(const Iterator &iterator) const;
+				bool operator==(const Chromosome::Iterator &iterator) const;
+				bool operator!=(const Chromosome::Iterator &iterator) const;
 
-				Iterator& operator++();
-				Iterator& operator++(int increment);
+				Chromosome::Iterator operator++();
+				Chromosome::Iterator operator++(int increment);
 		};
 
 		Chromosome::Iterator begin() const;
-		Chromosome::Iterator begin(int index) const;
+		Chromosome::Iterator begin(int start) const;
 		Chromosome::Iterator end() const;
 
 		int operator[](const Chromosome::Iterator &iterator) const;
-
-		bool operator==(const Chromosome &chromosome) const;
-		bool operator!=(const Chromosome &chromosome) const;
-
-		bool operator<=(const Chromosome &chromosome) const;
-		bool operator>=(const Chromosome &chromosome) const;
-
-		bool operator<(const Chromosome &chromosome) const;
-		bool operator>(const Chromosome &chromosome) const;
 };
 
 #endif //CHROMOSOME_H
