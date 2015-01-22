@@ -34,7 +34,7 @@ Population::~Population()
 {
 	if(this->population != 0)
 	{
-		delete []this->population;
+		//delete this->population;
 	}
 }
 
@@ -46,31 +46,27 @@ Population& Population::operator=(const Population &population)
 	//A copy of the chromosome
 	Chromosome *copy = 0;
 
-	//Copy only if they are different
-	if(this != &population)
+	//Check if the current population is populated by element
+	if(this->population != 0)
 	{
-		//Check if the current population is populated by element
-		if(this->population != 0)
-		{
-			//Free memory
-			this->~Population();
-		}
+		//Free memory
+		//delete this->population;
+	}
 
-		//Initialize the new population structure
-		this->population = new vector<Chromosome*>();
+	//Initialize the new population structure
+	this->population = new vector<Chromosome*>();
 
-		//Copy the chromosomes
-		for(Population::Iterator iter = population.begin(); iter != population.end(); iter++)
-		{
-			//Extract a chromosome from the population
-			chromosome = population[iter];
+	//Copy the chromosomes
+	for(Population::Iterator iter = population.begin(); iter != population.end(); iter++)
+	{
+		//Extract a chromosome from the population
+		chromosome = population[iter];
+		
+		//Copy the chromosome
+		copy = new Chromosome(chromosome);
 
-			//Copy the chromosome
-			copy = new Chromosome(chromosome);
-
-			//Insert the copy in the structure
-			this->population->push_back(copy);
-		}
+		//Insert the copy in the structure
+		this->population->push_back(copy);
 	}
 
 	return *this;
