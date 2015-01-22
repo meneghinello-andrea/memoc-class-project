@@ -47,7 +47,7 @@ Chromosome::~Chromosome()
 	if(this->genes != 0)
 	{	
 		//Free memory
-		delete this->genes;
+		//delete this->genes;
 	}
 }
 
@@ -56,28 +56,24 @@ Chromosome& Chromosome::operator=(const Chromosome &chromosome)
 	//A single gene in the chromosome
 	int gene = -1;
 
-	//Copy only if they are different
-	if(this != &chromosome)
+	//Check if the current chromosome is populated by elements
+	if(this->genes != 0)
 	{
-		//Check if the current chromosome is populated by elements
-		if(this->genes != 0)
-		{
-			//Free memory
-			this->~Chromosome();
-		}
+		//Free memory
+		//delete this->genes;
+	}
 
-		//Initialize the new chromosome structure
-		this->genes = new vector<int>();
+	//Initialize the new chromosome structure
+	this->genes = new vector<int>();
 
-		//Copy all the genes in the new chromosome structure
-		for(Chromosome::Iterator iter = chromosome.begin(); iter != chromosome.end(); iter++)
-		{
-			//Extract a single gene
-			gene = chromosome[iter];
+	//Copy all the genes in the new chromosome structure
+	for(Chromosome::Iterator iter = chromosome.begin(); iter != chromosome.end(); iter++)
+	{
+		//Extract a single gene
+		gene = chromosome[iter];
 
-			//Save the gene in the new structure
-			this->genes->push_back(gene);
-		}
+		//Save the gene in the new structure
+		this->genes->push_back(gene);
 	}
 
 	return *this;
