@@ -196,6 +196,7 @@ Population GeneticAlgorithm::initialize(int populationSize) const
 	//Array for the chromosome zero
 	int *geneSequence = new int[chromosomeSize];
 
+	//The population zero
 	Population population;
 
 	//Initialize the chromosome zero
