@@ -56,10 +56,8 @@ Population Population::getRandomSet(int setSize) const
 	//Population size
 	int size = this->size();
 
+	//Population set
 	Population set;
-
-	//Initialize the random seed
-	srand(time(NULL));
 
 	if(setSize > 1)
 	{

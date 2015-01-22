@@ -60,9 +60,6 @@ int Chromosome::size() const
 
 void Chromosome::mutate(int sequenceLength)
 {
-	//Initialize the random seed
-	srand(time(NULL));
-
 	//Select two point the chromosome
 	int cut_point_a = rand() % (sequenceLength - 1) + 1;
 	int cut_point_b = rand() % (sequenceLength - 1) + 1;

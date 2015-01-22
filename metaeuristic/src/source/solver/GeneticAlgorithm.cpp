@@ -225,9 +225,6 @@ Population GeneticAlgorithm::initialize(int populationSize) const
 
 Chromosome GeneticAlgorithm::crossover(const Chromosome &father, const Chromosome &mother) const
 {
-	//Initialize the random seed
-	srand(time(NULL));
-
 	//Flag to check if a gene is present in the child
 	bool inserted = false;
 
