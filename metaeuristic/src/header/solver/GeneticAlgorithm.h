@@ -4,13 +4,17 @@
 #include <algorithm>
 #include <fstream>
 #include <sstream>
+#include <stdlib.h>
 #include <string>
+#include <time.h>
 #include <vector>
 #include "src/header/object/Chromosome.h"
 #include "src/header/object/Population.h"
 
 using std::ifstream;
 using std::istringstream;
+using std::max;
+using std::min;
 using std::random_shuffle;
 using std::string;
 using std::vector;
@@ -19,20 +23,22 @@ class GeneticAlgorithm
 {
 	private:
 		int genes;
-		Population *population;
 		vector<double> *costs;
 
 		void readProblemDatas(string fileName);
 		double getCost(int geneA, int geneB) const;
-		double fitnessFunction(const Chromosome &chromosome) const;
-		double fitnessFunction(int *geneSequence, int sequenceSize) const;
-		void initialize(int populationSize);
+		Chromosome getBetterChromosome(const Population &set) const;
+		bool contains(int geneSequence[], int sequenceLength, int gene) const;
 
+		double fitnessFunction(const Chromosome &chromosome) const;
+		Population initialize(int populationSize) const;
+		Chromosome crossover(const Chromosome &father, const Chromosome &mother) const;
+	
 	public:
 		GeneticAlgorithm();
 		~GeneticAlgorithm();
 
-		void TEST();
+		Chromosome resolve(int populationSize, int evolutions, string fileName);
 };
 
 #endif //GENETIC_ALGORITHM_H
