@@ -24,6 +24,8 @@ class Population
 		Population(const Population &population);
 		~Population();
 
+		Population& operator=(const Population &population);
+
 		int size() const;
 		Population getRandomSet(int setSize) const;
 		void addChromosome(Chromosome &chromosome);
