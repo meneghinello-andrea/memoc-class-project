@@ -2,74 +2,114 @@
 
 Population::Population()
 {
-	//Initialize the container
 	this->population = new vector<Chromosome*>();
+}
+
+Population::Population(const Population &population)
+{
+	//The chromosome from the old population
+	Chromosome chromosome;
+
+	//A copy of the chromosome
+	Chromosome *copy;
+
+	for(Population::Iterator iter = population.begin(); iter != population.end(); iter++)
+	{
+		//Extracth a chromosome from the population
+		chromosome = population[iter];
+
+		//Copy the chromosome
+		copy = new Chromosome(chromosome);
+
+		//Insert the chromosome in the population
+		this->population->push_back(copy);
+	}
 }
 
 Population::~Population()
 {
-	Chromosome *current = 0;
-
-	for(vector<Chromosome*>::iterator iter = this->population->begin(); iter != this->population->end(); ++iter)
+	if(this->population != 0)
 	{
-		current = *iter;
-		delete current;
+		delete []this->population;
 	}
-
-	delete this->population;
 }
 
 int Population::size() const
 {
+	//Compute the population size
 	int size = static_cast<int>(this->population->size());
+
 	return size;
 }
 
-void Population::sortPopulation()
+Population Population::getRandomSet(int setSize) const
 {
-	//Sort the chromosome population by the fitness value of each chromosome
-	sort(this->population->begin(), this->population->end(), Population::compare);
-}
+	//Used to make a copy of the selected chromosome
+	Chromosome copy;
 
-void Population::addChromosome(Chromosome *chromosome)
-{
-	if(chromosome != 0)
-	{
-		this->population->push_back(chromosome);
-	}
-}
+	//The chromosome selected randomly
+	Chromosome *selected;
 
-Chromosome Population::getRandomChromosome(int setSize) const
-{
-	Chromosome* selected = 0;
+	//Index used to extract elements from the population
 	int index = -1;
+
+	//Population size
+	int size = this->size();
+
+	Population set;
 
 	//Initialize the random seed
 	srand(time(NULL));
 
-	//Initialize the set
-	vector<Chromosome> randomSet;
-
-	if(setSize > 0)
+	if(setSize > 1)
 	{
-		//Build the random set
 		for(int i = 0; i < setSize; i += 1)
 		{
-			//Select a random number between 0 and population size
-			index = rand() % this->size();
+			//Select a random index between 0 and population size (excluded)
+			index = rand() % size;
 
-			//Extract the selected chromosome
+			//Extract the chromosome pointed by index
 			selected = this->population->at(index);
 
-			//Add the selected chromosome to the set
-			randomSet.push_back(*selected);
-		}
+			//Make the copy of the selected chromosome
+			copy = *selected;
 
-		//Sort the random set
-		sort(randomSet.begin(), randomSet.end());
+			//Insert the copied chromosome in the set
+			set.addChromosome(copy);
+		}
 	}
 
-	return randomSet.at(0);
+	return set;
+}
+
+void Population::addChromosome(Chromosome &chromosome)
+{
+	//Copy the chromosome
+	Chromosome *copy = new Chromosome(chromosome);
+
+	//Add the chromosome to the population
+	this->population->push_back(copy);
+}
+
+string Population::toString() const
+{
+	Chromosome chromosome;
+	ostringstream stream;
+	string population;
+
+	for(Population::Iterator iter = this->begin(); iter != this->end(); iter++)
+	{
+		//Extract the current chromosome
+		chromosome = (*this)[iter];
+
+		//Insert the chromosome in the stream
+		stream << chromosome.toString() << endl;
+	}
+
+	//Convert the stream in string
+	population = stream.str();
+
+	return population;
 }
 
 bool Population::Iterator::operator==(const Population::Iterator &iterator) const
@@ -78,7 +118,8 @@ bool Population::Iterator::operator==(const Population::Iterator &iterator) cons
 
 	if(this->population == iterator.population && this->cursor == iterator.cursor)
 	{
-		equals = true;
+		//The two iterator are at the same point in the same population
+		equals = !equals;
 	}
 
 	return equals;
@@ -86,64 +127,90 @@ bool Population::Iterator::operator==(const Population::Iterator &iterator) cons
 
 bool Population::Iterator::operator!=(const Population::Iterator &iterator) const
 {
-	bool different = !((*this) == iterator);
+	bool different = !(*this == iterator);
+
 	return different;
 }
 
-Population::Iterator& Population::Iterator::operator++()
+Population::Iterator Population::Iterator::operator++()
 {
-	if(0 <= this->cursor && this->cursor < this->population->size())
+	//The size of the population
+	int size = this->population->size();
+
+	//Check if the cursor is in the matrix limits
+	if(0 <= this->cursor && this->cursor < size)
 	{
+		//Move the cursor to the next position
 		this->cursor += 1;
 	}
 
 	return *this;
 }
 
-Population::Iterator& Population::Iterator::operator++(int increment)
+Population::Iterator Population::Iterator::operator++(int increment)
 {
 	return ++(*this);
 }
 
 Population::Iterator Population::begin() const
 {
-	//Build the start iterator
-	return this->begin(0);
+	//Create an iterator that point to the first chromosome in the population
+	Population::Iterator iterator = this->begin(0);
+
+	return iterator;
 }
 
 Population::Iterator Population::begin(int start) const
 {
-	//Build an iterator
+	//Create an empty iterator
 	Population::Iterator iterator;
+
+	//Size of the population
+	int size = this->size();
+
+	//Link the iterator to the population
 	iterator.population = this;
-	iterator.cursor = start;
+
+	//Set the cursor in the iterator
+	if(0 <= start && start < size)
+	{
+		iterator.cursor = start;
+	}
+	else
+	{
+		iterator.cursor = size;
+	}
+
 	return iterator;
 }
 
 Population::Iterator Population::end() const
 {
-	//Build the end iterator
-	int start = this->size();
-	Population::Iterator iterator = this->begin(start);
+	//Compute the first index outside the population
+	int end = this->size();
+
+	//Create an iterator that point outside the population range
+	Population::Iterator iterator = this->begin(end);
+
 	return iterator;
 }
 
-Chromosome& Population::operator[](const Population::Iterator &iterator) const
+Chromosome Population::operator[](const Population::Iterator &iterator) const
 {
-	Chromosome* current = 0;
+	//The chromosome
+	Chromosome chromosome;
+
+	//Extract the cursor from the iterator
 	int index = iterator.cursor;
 
-	if(0 <= index && index < this->size())
+	//Population size
+	int size = this->size();
+
+	if(0 <= index && index < size)
 	{
-		//Extract the current chromosome
-		current = this->population->at(index);
+		//Extract the selected chromosome
+		chromosome = *(this->population->at(index));
 	}
 
-	return *current;
-}
-
-bool Population::compare(const Chromosome *chromosomeA, const Chromosome *chromosomeB)
-{
-	bool compare = (*chromosomeA) < (*chromosomeB);
-	return compare;
+	return chromosome;
 }

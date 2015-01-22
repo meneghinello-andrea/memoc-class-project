@@ -1,13 +1,17 @@
 #ifndef POPULATION_H
 #define POPULATION_H
 
-#include <algorithm>
+#include <iostream>
+#include <math.h>
+#include <sstream>
 #include <stdlib.h>
-#include <time.h>
+#include <string>
 #include <vector>
 #include "src/header/object/Chromosome.h"
 
-using std::sort;
+using std::endl;
+using std::ostringstream;
+using std::string;
 using std::vector;
 
 class Population
@@ -17,13 +21,14 @@ class Population
 
 	public:
 		Population();
+		Population(const Population &population);
 		~Population();
 
 		int size() const;
+		Population getRandomSet(int setSize) const;
+		void addChromosome(Chromosome &chromosome);
 
-		void sortPopulation();
-		void addChromosome(Chromosome *chromosome);
-		Chromosome getRandomChromosome(int setSize) const;
+		string toString() const;
 
 		class Iterator
 		{
@@ -34,20 +39,18 @@ class Population
 				int cursor;
 
 			public:
-				bool operator==(const Iterator &iterator) const;
-				bool operator!=(const Iterator &iterator) const;
+				bool operator==(const Population::Iterator &iterator) const;
+				bool operator!=(const Population::Iterator &iterator) const;
 
-				Iterator& operator++();
-				Iterator& operator++(int increment);
+				Population::Iterator operator++();
+				Population::Iterator operator++(int increment);
 		};
 
 		Population::Iterator begin() const;
 		Population::Iterator begin(int start) const;
 		Population::Iterator end() const;
 
-		Chromosome& operator[](const Population::Iterator &iterator) const;
-
-		static bool compare(const Chromosome *chromosomeA, const Chromosome *chromosomeB);
+		Chromosome operator[](const Population::Iterator &iterator) const;
 };
 
 #endif //POPULATION_H
