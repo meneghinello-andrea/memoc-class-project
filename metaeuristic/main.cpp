@@ -11,7 +11,7 @@ int main(int argc, char* argv[])
 {
 	GeneticAlgorithm *solver = new GeneticAlgorithm();
 
-	Chromosome c = solver->resolve(100, 30, "data/cost_10_1.dat");
+	Chromosome c = solver->resolve(136, 50, "data/cost_10_1.dat");
 
 	cout << c.toString() << endl;
 
