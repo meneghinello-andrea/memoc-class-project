@@ -343,7 +343,7 @@ Chromosome GeneticAlgorithm::resolve(int populationSize, int evolutions, string 
 		nextPopulation.addChromosome(better);
 
 		//Create the next generation
-		for(int j = 0; i < (populationSize - 1); j += 1)
+		for(int j = 0; j < (populationSize - 1); j += 1)
 		{
 			//Get a random set to search the father
 			set = currentPopulation.getRandomSet(50);
