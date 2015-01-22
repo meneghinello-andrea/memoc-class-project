@@ -36,7 +36,7 @@ int main(int argc, char* argv[])
 		//Lunch the solver
 		computations = solver->resolve(dataFile, problemFile, resultFile);
 
-		if(computations == 1)
+		if(computations != -1)
 		{
 			cout << "RISOLUZIONE AVVENUTA CON SUCCESSO" << endl;
 		}
