@@ -379,3 +379,14 @@ Chromosome GeneticAlgorithm::resolve(int populationSize, int evolutions, string 
 
 	return better;
 }
+
+double GeneticAlgorithm::getObjectiveValue(const Chromosome &chromosome) const
+{
+	//Compute the fitness value of the chromosome
+	double fitness = this->fitnessFunction(chromosome);
+	
+	//compute the objective value
+	double objValue = 1 / fitness;
+
+	return objValue;
+}

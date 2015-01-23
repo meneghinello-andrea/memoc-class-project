@@ -39,6 +39,8 @@ class GeneticAlgorithm
 		~GeneticAlgorithm();
 
 		Chromosome resolve(int populationSize, int evolutions, string fileName);
+
+		double getObjectiveValue(const Chromosome & chromosome) const;
 };
 
 #endif //GENETIC_ALGORITHM_H
