@@ -1,2 +1,15 @@
 #Exclude the result file of CPlex
 results/
+
+#exclude tex files
+*.aux
+*.glg
+*.glo
+*.gls
+*.ist
+*.log
+*.out
+*.pdf
+*.toc
+
+documentation/Frontespiece/Frontespiece-frn.tex
