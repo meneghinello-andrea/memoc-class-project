@@ -131,7 +131,7 @@ bool GeneticAlgorithm::contains(int geneSequence[], int sequenceLength, int gene
 	bool contains = false;
 
 	//Search a specific gene in the gene sequence
-	for(int i = 0; i < sequenceLength && contains == false; i += 1)
+	for(int i = 0; i <= sequenceLength && contains == false; i += 1)
 	{
 		//Check each gene with a specific one
 		if(geneSequence[i] == gene)
