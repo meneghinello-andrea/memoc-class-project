@@ -1,7 +1,7 @@
 COMPILER = g++
-COMPILER_FLAGS = -Wall -c -I .
+COMPILER_FLAGS = -Wall -c -I . -std=c++0x
 
-LINKER_FLAGS = -I .
+LINKER_FLAGS = -I . -std=c++0x
 
 HEADER_DIR = src/header
 SOURCE_DIR = src/source

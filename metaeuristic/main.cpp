@@ -1,3 +1,4 @@
+#include <chrono>
 #include <ctime>
 #include <iostream>
 #include <string>
@@ -51,13 +52,13 @@ int main(int argc, char* argv[])
 	if((argc - 1) == 3)
 	{
 		//Extract the path to the file with the data
-		fileName = argc[1];
+		fileName = argv[1];
 
 		//Extract the population size
-		populationSize = argc[2];
+		populationSize = atoi(argv[2]);
 
 		//Extract the numboer of evolutions
-		evolutions = argc[3];
+		evolutions = atoi(argv[3]);
 
 		//Create the solver
 		solver = new GeneticAlgorithm();
@@ -72,7 +73,7 @@ int main(int argc, char* argv[])
 		end = std::chrono::system_clock::now();
 
 		//Compute the objective value of the solution found
-		objValue = solver->getObjectiveValue(chromosome);
+		objValue = solver->getObjectiveValue(solution);
 
 		//Print the solution
 		cout << solution.toString() << " -> " << objValue << endl;
