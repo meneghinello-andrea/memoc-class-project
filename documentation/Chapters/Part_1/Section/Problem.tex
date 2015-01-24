@@ -3,19 +3,21 @@
 % Problem.tex
 %
 %------------------------------------------------
-\section{Prima parte}
+\section{il problema}
 \label{pt1:problem}
-Il problema può essere assimilato al problema del commesso viaggiatore (TSP) il quale deve visitare un insieme di città attraversandole \keyword{una ed una sola} volta. Pensando alle città (fori nel caso concreto) come ad un grafo si chiede di determinare il miglior cammino hamiltoniano che lo attraversa.
+Il problema può essere assimilato al problema del commesso viaggiatore (TSP) il quale deve visitare un insieme di città attraversandole \keyword{una ed una sola} volta. Pensando alle città (fori nel caso concreto) come ad un grafo si chiede di determinare il miglior cammino \keyword{hamiltoniano} che lo attraversa.
 
 La problematica può essere espressa attraverso il seguente modello di programmazione lineare intera:
 
 \begin{align}
-MIN: &\sum_{i,j:(i,j) \in A} C_{i,j}x_{i,j}                       &  \nonumber           & \nonumber \\
-S.T. &\sum_{j:(0,j) \in A} x_{0,j}                                & = \left | N \right | & \nonumber \\
-     &\sum_{i:(i,k) \in A} x_{i,k} - \sum_{j_(k,j) \in A} x_{k,j} & = 1                  & \forall k \in N \textbackslash \left \{ 0 \right \} \\     
-     &\sum_{j:(i,j) \in A} y_{i,j}                                & = 1                  & \forall i \in N \\     
-     &\sum_{i:(i,j) \in A} y_{i,j}                                & = 1                  & \forall j \in N \\
-     &\sum_{i:(i,j) \in A} y_{i,j}                                & \le \left | N \right |y_{i,j} \\
-     &x_{i,j} \in \mathbb{Z}_{+}                                  & \nonumber            & \nonumber \\
-     &y_{i,j} \in \left \{ 0, 1 \right \}                         & \nonumber            & \nonumber \\
+MIN: &\sum_{i,j:(i,j) \in A} C_{i,j}x_{i,j} \\
+S.T.: \nonumber \\ 
+&\sum_{j:(0,j) \in A} x_{0,j} &=&\left|N\right|& \\
+&\sum_{i:(i,k) \in A} x_{i,k} - \sum_{j:(k,j) \in A} x_{k,j} &=&1 &\forall k \in N \textbackslash \left\{0\right\} \\
+&\sum_{j:(i,j) \in A} y_{i,j} &=&1 &\forall i \in N \\
+&\sum_{i:(i,j) \in A} y_{i,j} &=&1 &\forall j \in N \\
+&x_{i,j} &\le&\left|N\right|y_{i,j} &\forall (i,j) \in A\\
+DOMINI: \nonumber \\ 
+&x_{i,j} \in \mathbb{Z}_{+} &&& \forall (i,j) \in A\\
+&y_{i,j} \in \left\{0, 1\right\} &&& \forall (i, j) \in A
 \end{align}
