@@ -1,0 +1,16 @@
+%-------------------------------------------------
+%
+% Assumption.tex
+%
+%------------------------------------------------
+\section{assunzioni}
+\label{pt1:assumption}
+Posso assumere senza alcuna perdita di generalità nel problema che il grafo G sia completo quindi siano presenti contemporaneamente gli archi che collegano il nodo $i$ al nodo $j$ e viceversa.
+
+Al fine di ottenere migliori prestazioni si è deciso di omettere gli archi che collegano un nodo con se stesso in quanto non sono portatori di informazione utile al problema perciò la cardinalità finale della matrice associata al grafo risulta essere:
+
+\begin{equation}
+\left|A\right| = \frac{\left|N\right|\times\left(\left|N\right|-1\right)}{2} - \left|N\right|
+\end{equation}
+
+Si infine assunto che i costi $c_{i,j}$ corrispondano alla distanza euclidea tra il nodo $i$ ed il nodo $j$ e che $c_{i,j}=c_{j,i} \forall (i,j)\in A$ ovvero il TSP sia simmetrico.
