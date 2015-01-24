@@ -24,6 +24,6 @@ pdflatex Frontespiece-frn.tex
 pdflatex Frontespiece.tex
 cd ..
 pdflatex Master.tex
-makeglossaries Master
+::makeglossaries Master
 pdflatex Master.tex
-pdflatex Master.tex
+::pdflatex Master.tex
