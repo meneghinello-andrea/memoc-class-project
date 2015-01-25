@@ -1,0 +1,138 @@
+%-------------------------------------------------
+%
+% Solver.tex
+%
+%------------------------------------------------
+\section[Il risolutore]{il risolutore}
+\label{pt1:solver}
+Il programma implementato per determinare la soluzione del problema illustrato in Sezione \ref{pt1:problem} è stato implementato utilizzando il linguaggio $C++$ con chiamate alle librerie IBM CPlex \english{Callable Library}.
+
+Viene ora fornita la struttura dei \english{files} che compongono tale programma.
+
+\dirtree{%
+.1 cplex\_solver.
+.2 src.
+.3 header.
+.4 macro.h.
+.5 cpxmacro.h.
+.4 solver.
+.5 TSPSolver.h.
+.3 source.
+.4 solver.
+.5 TSPSolver.cpp.
+.2 main.cpp.
+.2 makefile.
+}
+
+La componente più importante del programma è la classe \texttt{TSPSolver} essa ha il compito di leggere i dati e configurare l'ambiente CPlex prima di lanciare l'algoritmo di risoluzione.
+
+I metodi che la compongono degni di interesse sono i seguenti:
+
+\dirtree{%
+.1 TSPSolver.
+.2 protected.
+.3 findIndex.
+.3 readProblemDatas.
+.3 setObjectiveFunction.
+.3 setConstraint\_1.
+.3 setConstraint\_2.
+.3 setConstraint\_3.
+.3 setConstraint\_4.
+.3 setConstraint\_5.
+.2 public.
+.3 resolve.
+}
+
+\subsection[Caricamento dati]{caricamento dati}
+\label{pt1:solver:datas}
+Data la possibilità di gestire problemi di grosse dimensioni ed al fine di ottimizzare la risorsa memoria si è deciso di generare, e conseguentemente caricare nel programma \english{solver} solamente metà matrice associata al grafo; la matrice triangolare superiore. E' compito del programma ripristinare i valori assenti.
+
+I dati del problema sono memorizzati, dal metodo \texttt{readProblemDatas}, all'interno di un vettore e sono resi accessibili in forma matriciale dal metodo \texttt{findIndex}. Tale metodo virtualizza la matrice associata al grafo permettendo alle rimanenti parti, che compongono il solver, di poter operare su tale matrice nascondendo la sua linearizzazione.
+
+Tale virtualizzazione è resa possibile dal seguente algoritmo per il calcolo dell'indice del vettore linearizzato.
+
+\begin{lstlisting}[frame=single]
+int TSPSolver::findIndex(int row, int col)
+{
+	//Numero di valori assenti prima della posizione (row, col)
+	int empty_space = 0;
+	
+	//Indice a cui si trova il valore puntato da (row, col)
+	int index = 0;
+	
+	//Indice di inizio riga della matrice virtuale
+	int row_start = 0;
+	
+	if(row < column)
+	{
+		//Calcoli per la matrice triangolare inferiore
+		row_start = (N * row) - ((row * (row + 1)) / 2;
+		empty_space = (row + 1);
+		index = row_start - empty_space + col;
+	}
+	else
+	{
+		//Calcoli per la matrice triangolare superiore
+		row_start = (N * col) - ((col * (col + 1)) / 2;
+		empty_space = (col + 1);
+		index = row_start - empty_space + row;
+	}
+	
+	return index;
+}
+\end{lstlisting}
+
+\subsection[Settaggio variabili]{settaggio variabili}
+\label{pt1:solver:variables}
+Al fine di poter aggiungere variabili al modello in CPlex, occorre richiamare il metodo \texttt{CPXnewcols}. Esso permette il settaggio della funzione obiettivo del problema specificato. Per semplicità di lettura si è deciso di effettuare una chiamata per ogni singola variabile.
+
+Tale metodo richiede di specificare le seguenti informazioni (tali informazioni sono reperibili nel modello proposto in Sezione \ref{pt1:problem}):
+
+\begin{itemize}
+\item l'ambiente CPlex;
+\item il problema sul quale esso dovrà operare;
+\item il numero di nuove variabili da aggiungere;
+\item il coefficiente della variabile in funzione obiettivo (vedi \ref{pt1:solver:datas});
+\item il \english{lower bound};
+\item l'\english{upper bound};
+\item il tipo della variabile (intera, booleana, reale);
+\item un'etichetta da associare alla variabile.
+\end{itemize}
+
+Al termine della computazione del metodo \texttt{setObjectiveFunction} le variabili all'interno del problema CPlex sono cosi memorizzate:
+
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c}
+\hline 
+$y_{0,1}$ & $y_{0,2}$ & $\cdots$ & $y_{0,\left|N\right|}$ & $y_{1,0}$ & $y_{1,2}$ & $ \cdots $ & $y_{2,\left|N\right|}$ & $\cdots$ & $y_{\left|N\right|,1}$ & $y_{\left|N\right|,2}$ & $\cdots$ & $y_{\left|N\right|,\left|N\right| - 1}$ & $\cdots$\\ 
+\hline 
+\end{tabular}
+
+\begin{tabular}{c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline 
+$\cdots$ & $x_{0,1}$ & $x_{0,2}$ & $\cdots$ & $x_{0,\left|N\right|}$ & $x_{1,0}$ & $x_{1,2}$ & $ \cdots $ & $x_{2,\left|N\right|}$ & $\cdots$ & $y_{\left|N\right|,1}$ & $x_{\left|N\right|,2}$ & $\cdots$ & $x_{\left|N\right|,\left|N\right| - 1}$\\ 
+\hline 
+\end{tabular}  
+
+\subsection[Caricamento vincoli]{caricamento vincoli}
+\label{pt1:solver:constraint}
+I vincoli sono aggiunti al modello CPlex tramite la chiamata al metodo \texttt{CPXaddrows} il quale richiede di specificare i seguenti parametri:
+
+\begin{itemize}
+\item gli indici delle variabili coinvolte all'interno del vettore delle variabili di CPlex;
+\item i coefficienti delle variabili;
+\item il senso del vincolo ($\le$, $=$, $\ge$);
+\item il termine noto.
+\end{itemize}
+
+Le ultime tra informazioni sono banalmente ricavabili all'interno del modello esposto in Sezione \ref{pt1:problem} mentre i metodi \texttt{setConstaint\_*} all'interno della classe \texttt{TSPSolver} illustrano il processo di selezione delle variabili all'interno dell'ambiente di CPlex.
+
+\subsection[Esecuzione]{esecuzione}
+\label{pt1:solver:esecution}
+Il metodo \texttt{resolver} della classe \texttt{TSPSolver} ha i seguenti compiti:
+
+\begin{itemize}
+\item coordinare il processo di caricamento dati;
+\item coordinare il processo di impostazione dell'ambiente CPlex (funzione obiettivo, vincoli, tipologia di problema [max, min]);
+\item risolvere il problema;
+\item stampare a video il tempo (ms) di computazione speso per la risoluzione del problema.
+\end{itemize}
