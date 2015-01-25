@@ -5,7 +5,7 @@
 %------------------------------------------------
 \section[Assunzioni]{assunzioni}
 \label{pt1:assumption}
-Posso assumere senza alcuna perdita di generalità nel problema che il grafo G sia completo quindi siano presenti contemporaneamente gli archi che collegano il nodo $i$ al nodo $j$ e viceversa.
+Posso assumere senza alcuna perdita di generalità nel problema che il grafo G sia completo. Dati quindi due nodi $i$ e $j$ saranno contemporaneamente presenti l'arco $i \rightarrow j$ e l'arco $j \rightarrow j$.
 
 Al fine di ottenere migliori prestazioni si è deciso di omettere gli archi che collegano un nodo con se stesso in quanto non sono portatori di informazione utile al problema.
 
@@ -15,4 +15,17 @@ In conclusione la cardinalità finale della matrice associata al grafo risulta e
 \left|A\right| = \frac{\left|N\right|\times\left(\left|N\right|-1\right)}{2} - \left|N\right|
 \end{equation}
 
-Si è infine assunto che i costi $c_{i,j}$ corrispondano alla distanza euclidea tra il nodo $i$ ed il nodo $j$ e che $c_{i,j}=c_{j,i} \forall (i,j)\in A$ ovvero il TSP sia simmetrico.
+Si è infine assunto che i costi $c_{i,j}$ corrispondano alla distanza euclidea tra il nodo $i$ ed il nodo $j$ e che $c_{i,j}=c_{j,i} \forall (i,j)\in A$ ovvero il \keyword{TSP sia simmetrico}.
+
+Viene ora fornito un esempio di matrice associata al grafo del problema.
+
+\begin{equation}
+A=
+\begin{bmatrix} 
+0                        & c_{0,1}                  & c_{0,2}                  & \cdots & c_{0,\left|N\right|}                  \\
+c_{1,0}                  & 0                        & c_{1,2}                  & \cdots & c_{1,\left|N\right|}                  \\
+\vdots                   & \vdots                   & \vdots                   & \vdots & \vdots                                \\
+c_{\left|N\right| - 1,0} & c_{\left|N\right| - 1,1} & c_{\left|N\right| - 1,2} & 0      & c_{\left|N\right| - 1,\left|N\right|} \\
+c_{\left|N\right|,0}     & c_{\left|N\right|,1}     & c_{\left|N\right|,2}     & \cdots & 0                                     \\
+\end{bmatrix}
+\end{equation}
