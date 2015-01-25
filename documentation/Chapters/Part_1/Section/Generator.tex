@@ -5,7 +5,7 @@
 %------------------------------------------------
 \section[Generatori di dati]{generatori di dati}
 \label{pt1:generator}
-Al fine di ottenere una discreta quantità di dati su cui effettuare dei test si è progettato e conseguentemente implemento, in linguaggio $C++$,
+Al fine di ottenere una discreta quantità di dati su cui effettuare dei \english{test} si è progettato e conseguentemente implemento, in linguaggio $C++$,
 un programma in grado di generare diverse tipologie di istanze.
 
 Il programma è composto da alcuni oggetti di servizio che hanno lo scopo di rappresentare gli oggetti della realtà da studiare (\texttt{Plate} e \texttt{Hole}).
@@ -80,6 +80,6 @@ In Figura \ref{pt1:generator:imgs} sono riportati alcuni esempi di dati generati
 \label{pt1:generator:imgs}
 \end{figure}
 
-Il programma produce due \english{files} per ogni istanza generata. Un \english{file}, con estensione \texttt{.crd}, contenente le coordinate dei punti generati ed un \english{file}, con estensione \texttt{.dat}, contenente i costi calcolati.
+Il programma produce due \english{files} per ogni istanza generata. Un \english{file}, con estensione \texttt{.crd}, contenente le coordinate dei punti generati ed un \english{file}, con estensione \texttt{.dat}, contenente il numero di fori da generare ed i costi (distanze euclidee).
 
-Per ottimizzare lo spazio di salvataggio si è deciso che, dati due nodi $i$ e $j$ nel \english{file} contenente i dati (\texttt{.dat}) viene salvato solamente il costo dell'arco $i,j$ in quanto l'arco inverso $j,i$ è deducibile dalla simmetria del grafo. Il \english{file} contiene nella prima riga il numero di fori generati e a seguire tutti i costi, uno per ogni riga.
+Per ottimizzare lo spazio di salvataggio si è deciso che, dati due nodi $i$ e $j$ nel \english{file} contenente i dati (\texttt{.dat}) viene salvato solamente il costo dell'arco $i \rightarrow j$ in quanto l'arco inverso $j \rightarrow i$ è deducibile dalla simmetria del grafo. Il \english{file} contiene nella prima riga il numero di fori generati e a seguire tutti i costi, uno per ogni riga.
