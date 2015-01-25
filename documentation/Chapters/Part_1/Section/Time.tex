@@ -51,7 +51,7 @@ Successivamente si è eseguito l'algoritmo su ciascuna di esse e si sono registr
 \caption{Tempi medi di esecuzione}
 \end{table}
 
-Nella Tabella \ref{pt1:time:tabular} sono riportate le medie dei tempi riscontrati.
+Nella Tabella 1.1 sono riportate le medie dei tempi riscontrati.
 
 \begin{figure}
 \centering
@@ -72,8 +72,10 @@ Nella Tabella \ref{pt1:time:tabular} sono riportate le medie dei tempi riscontra
 
 \subsection[Conclusioni]{conclusioni}
 \label{pt1:time:conclusion}
-Dalle misurazioni effettuate si evince che all'aumentare dei punti che compongono l'istanza vi è un significativo aumento nei tempi di risoluzione, in modo esatto del modello.
+Dalle misurazioni effettuate si evince che all'aumentare dei punti che compongono l'istanza vi è un significativo aumento nei tempi di risoluzione, in modo esatto, del modello.
 
-Più precisamente, come si può notare in figura \ref{pt1:time:time01} (N.B. scala dei tempi logaritmica), il tempo di risoluzione del problema cresce esponenzialmente all'aumentare dei nodi che compongono il grafo.
+Più precisamente, come si può notare in figura \ref{pt1:time:time01} (attenzione alla scala dei tempi logaritmica), il tempo di risoluzione del problema cresce esponenzialmente all'aumentare dei nodi che compongono il grafo.
 
-Essendo il TSP un problema \english{NP-hard}, la sua risoluzione richiede degli algoritmi a complessità esponenziale perciò i risultati ottenuti sono coerenti con quanto atteso.
+Essendo il TSP un problema \english{NP-hard}, la sua risoluzione esatta richiede degli algoritmi a complessità esponenziale perciò i risultati ottenuti sono coerenti con quanto atteso.
+
+Dal grafico in Figura \ref{pt1:time:time02} è possibile osservare come anche la disposizione dei punti che compongono il grafo influisce sui tempi di risoluzione, in modo esatto, del problema. Sono da preferirsi grafi con forme geometriche ben definite al fine di poter coprire un maggior numero di punti nella stessa unità temporale.
