@@ -1,0 +1,56 @@
+%-------------------------------------------------
+%
+% Solver.tex
+%
+%------------------------------------------------
+\section[Il risolutore]{il risolutore}
+\label{pt2:solver}
+Il programma con l'implementazione della meta euristica è composta dalle seguenti classi.
+
+\dirtree{%
+.1 metaheuristic.
+.2 src.
+.3 header.
+.4 object.
+.5 Chromosome.h.
+.5 Population.h.
+.4 solver.
+.5 GeneticAlgorithm.h.
+.3 source.
+.4 object.
+.5 Chromosome.cpp.
+.5 Population.cpp.
+.4 solver.
+.5 GeneticAlgorithm.cpp.
+.2 main.cpp.
+.2 makefile.
+}
+
+Le classi \texttt{Chromosome} e \texttt{Population} sono classi di servizio all'algoritmo e rappresentato rispettivamente un singolo cromosoma ed una popolazione.
+
+La classe più importante è \texttt{GeneticAlgorithm} che racchiude in sé l'algoritmo illustrato in Sezione \ref{pt2:design}, ed è composta dai seguenti metodi:
+
+\dirtree{%
+.1 GeneticAlgorithm.
+.2 private.
+.3 readProblemDatas.
+.3 getCost.
+.3 getBetterChromosome.
+.3 contains.
+.3 fitnessFunction.
+.3 initialize.
+.3 crossover.
+.2 public.
+.3 resolve.
+.3 getObjectiveValue.
+}
+
+I metodi \texttt{readProblemDatas} e \texttt{getCost} sono le medesime implementazioni che ritroviamo nel risolutore CPlex e servono a virtualizzare la matrice associata al grafo.
+
+Il metodo \texttt{getBetterChromosome} restituisce il cromosoma con il miglior valore di \english{fitness} data una popolazione e viene utilizzato per estrarre i due \english{parent}.
+
+Il metodo \texttt{fitnessFunction} calcola il valore di \english{fitness} dato un cromosoma.
+
+Mentre il metodo \texttt{initialize} serve per inizializzare la popolazione iniziale prima di eseguire le evoluzioni genetiche.
+
+Il metodo \texttt{crossover} esegue l'operazione di \english{crossover} mentre il metodo \texttt{resolve} è colui che coordina l'avanzamento delle evoluzioni.

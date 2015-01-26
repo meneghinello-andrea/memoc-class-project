@@ -1,0 +1,50 @@
+%-------------------------------------------------
+%
+% Design.tex
+%
+%------------------------------------------------
+\section[Progettazione dell'algoritmo]{progettazione dell'algoritmo}
+\label{pt2:design}
+La progettazione dell'algoritmo è iniziata progettando la rappresentazione delle soluzioni del problema all'interno dell'algoritmo, ossia i \keyword{cromosomi} dell'algoritmo genetico.
+
+Per il problema in questione si è scelta la \english{path representation} ossia ogni cromosoma è composto da una sequenza di \keyword{geni} dove ogni gene rappresenta un singolo foro da effettuare sulla piastra. Leggendo in sequenza i geni di ogni cromosoma otteniamo un possibile cammino hamiltoniano sul grafo in questione.
+
+\begin{table}
+\centering
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline 
+0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 0\\
+\hline 
+\end{tabular}
+\caption{Esempio di cromosoma in un grafo a 13 punti}
+\end{table}
+
+Il cromosoma presenta il gene 0 sia in principio che in fine del cromosoma in quanto si vuole che la testina ritorni nella posizione iniziale prima di iniziare ad operare su di una nuova piastra.
+
+Dal momento che ogni permutazione dei geni di un cromosoma (ad eccezione del gene in posizione 0 e posizione $n + 1$) rappresenta una possibile soluzione del problema di partenza, la popolazione iniziale si è scelta mescolando casualmente il ``cromosoma zero'' dalla posizione 1 alla posizione $n + 1$ esclusa (garantendo che primo del ultimo gene rimangano inalterati).
+
+Come \keyword{funzione di \english{fitness}} si è implementato l'inverso della funzione obiettivo illustrata in Sezione \ref{pt1:problem}; in questo modo minore sarà il valore della funzione obiettivo maggiore sarà il valore del valore di \english{fitness} associato ad un cromosoma, garantendogli cosi maggior probabilità di sopravvivenza.
+
+Per la scelta dei due cromosomi \english{parent}, che dovranno generare un nuovo cromosoma per la generazione successiva (\english{offspring}), all'interno dell'i-esima evoluzione della popolazione si è ricorsi al metodo \keyword{torneo-n} cosi da evitare di privilegiare eccessivamente gli individui migliori di ogni generazione. Questo dovrebbe impedire di condurre la popolazione verso un massimo locale.
+
+Per l'operazione di generazione di un nuovo figlio, operazione di \english{\keyword{crossover}} si è adottato l'operatore di \english{\keyword{order crossover}}. Ossia si selezionano due posizioni casuali all'interno del cromosoma padre e si ricopiano i geni in tali posizioni nelle medesime posizioni del figlio, mentre le rimanenti posizioni si riempiono con i geni assenti ma nello stesso ordine con cui compaiono all'iterno della madre.
+
+Nella Tabella 2.2 viene fornito un esempio di \english{order crossover} con indici (4,9).
+
+L'algoritmo è lasciato avanzare per un numero di evoluzioni prederminato dall'utente che lo avvia.
+
+\begin{table}
+\centering
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline 
+0 &  1 &  2 &  3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 0\\
+\hline
+0 & 12 & 11 & 10 & 9 & 8 & 7 & 6 & 5 & 4 &  3 &  2 &  1 & 0\\
+\hline
+0 & 12 & 11 & 10 & 4 & 5 & 6 & 7 & 8 & 9 &  3 &  2 &  1 & 0\\
+\hline
+\end{tabular}
+\caption{Esempio di order crossover (padre - madre - figlio)}
+\end{table}
+
+Con probabilità del 40\% il figlio generato subirà una mutazione effettuata tramite inversione. Questa avviene selezionando due posizioni casuali nel figlio, comprese tra 1 ed $n$, e si invertono i geni in quelle posizioni.
