@@ -48,11 +48,12 @@ Plate* ClusterPlateGenerator::generate(int width, int height, int holes) const
 			//Generate an integer random number between 1 and the height of the plate (ordered of the center of cluster)
 			ordered = rand() % (plate->getHeight() + 1);
 
+			//Setup the center of the cluster
+			center = new Hole(abscissa, ordered);
+
 			//Generate an integer random number between 1 and the width of the plate (radius of the cluster)
 			radius = rand() % (min(abs(plate->getWidth() - center->getAbscissa()), abs(plate->getHeight() - center->getOrdered())) + 1);
 
-			//Setup the center of the cluster
-			center = new Hole(abscissa, ordered);
 			abscissa = -1;
 			ordered = -1;
 
