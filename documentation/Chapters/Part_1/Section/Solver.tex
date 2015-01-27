@@ -24,7 +24,7 @@ Viene ora fornita la struttura dei \english{files} che compongono tale programma
 .2 makefile.
 }
 
-La componente più importante del programma è la classe \texttt{TSPSolver} essa ha il compito di leggere i dati e configurare l'ambiente CPlex prima di lanciare l'algoritmo di risoluzione.
+La componente più importante del programma è la classe \texttt{TSPSolver}; essa ha il compito di leggere i dati e configurare l'ambiente CPlex prima di lanciare l'algoritmo di risoluzione.
 
 I metodi che la compongono degni di interesse sono i seguenti:
 
@@ -124,7 +124,7 @@ I vincoli sono aggiunti al modello CPlex tramite la chiamata al metodo \texttt{C
 \item il termine noto.
 \end{itemize}
 
-Le ultime tra informazioni sono banalmente ricavabili all'interno del modello esposto in Sezione \ref{pt1:problem} mentre i metodi \texttt{setConstaint\_*} all'interno della classe \texttt{TSPSolver} illustrano il processo di selezione delle variabili all'interno dell'ambiente di CPlex. In breve ognuno dei cinque metodi utilizza sapientemente il calcolo degli indici al fine di consentire all'algoritmo di avere a disposizione la matrice associata al grafo anziché il vettore linearizzato ottenuto dal \english{file} \texttt{.dat}.
+Le ultime tre informazioni sono banalmente ricavabili all'interno del modello esposto in Sezione \ref{pt1:problem} mentre i metodi \texttt{setConstaint\_*} all'interno della classe \texttt{TSPSolver} illustrano il processo di selezione delle variabili all'interno dell'ambiente di CPlex. In breve ognuno dei cinque metodi utilizza sapientemente il calcolo degli indici al fine di consentire all'algoritmo di avere a disposizione la matrice associata al grafo anziché il vettore linearizzato ottenuto dal \english{file} \texttt{.dat}.
 
 \subsection[Esecuzione]{esecuzione}
 \label{pt1:solver:esecution}
